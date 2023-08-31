@@ -77,41 +77,66 @@ const readInput = async (message) => {
   return description;
 };
 
-const deleteTask = async(tasksList = []) => {
+const deleteTask = async (tasksList = []) => {
   //{ value: 1, name: `${"1. ".bgCyan.red.bold} Create ToDo` }
-  const choices = tasksList.map( (task,i) => {
+  const choices = tasksList.map((task, i) => {
     const idx = `${i + 1}`.blue;
     return {
       value: task.id,
-      name: `${ idx } ${task.description}`
-    }
+      name: `${idx} ${task.description}`,
+    };
   });
 
   const questions = [
     {
-      type: 'list',
-      name: 'id',
-      message: 'Delete',
-      choices: [
-        { value: 0, name: `${"0 ".red} Cancelar` },
-        ...choices
-      ]
-    }
-  ]
+      type: "list",
+      name: "id",
+      message: "Delete",
+      choices: [{ value: 0, name: `${"0 ".red} Cancelar` }, ...choices],
+    },
+  ];
   const { id } = await inquirer.prompt(questions);
   return id;
 };
 
-const confirm = async(message) => {
+const confirm = async (message) => {
   const question = [
     {
-      type: 'confirm',
-      name: 'ok',
-      message
-    }
+      type: "confirm",
+      name: "ok",
+      message,
+    },
   ];
   const { ok } = await inquirer.prompt(question);
   return ok;
-}
+};
+const listCompletedTasks = async (tasksList = []) => {
+  //{ value: 1, name: `${"1. ".bgCyan.red.bold} Create ToDo` }
+  const choices = tasksList.map((task, i) => {
+    const idx = `${i + 1}`.blue;
+    return {
+      value: task.id,
+      name: `${idx} ${task.description}`,
+      checked: task.completedOn ? true : false,
+    };
+  });
 
-export { inquirerMenu, pause, readInput, deleteTask, confirm };
+  const question = [
+    {
+      type: "checkbox",
+      name: "ids",
+      message: "Select",
+      choices,
+    },
+  ];
+  const { ids } = await inquirer.prompt(question);
+  return ids;
+};
+export {
+  inquirerMenu,
+  pause,
+  readInput,
+  deleteTask,
+  confirm,
+  listCompletedTasks,
+};

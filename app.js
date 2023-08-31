@@ -5,6 +5,7 @@ import {
   readInput,
   deleteTask,
   confirm,
+  listCompletedTasks,
 } from "./helpers/inquirer.js";
 import Tasks from "./models/tasks.js";
 import { saveDB, readDB } from "./helpers/saveFile.js";
@@ -34,6 +35,10 @@ const main = async () => {
         break;
       case 4:
         tasks.listCompletedTasks(false);
+        break;
+      case 5:
+        const ids = await listCompletedTasks(tasks.arrayList);
+        tasks.toggleCompleted(ids);
         break;
       case 6:
         const id = await deleteTask(tasks.arrayList);
